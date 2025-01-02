@@ -56,6 +56,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.example.myapplication.MuscleOptimization.armsMuscles
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.IntOffset
 import com.example.myapplication.R // Change to your package name
 
 
@@ -334,30 +335,39 @@ fun ArmsScreen(navController: NavController) {
 fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:String="") {
     Popup(
         alignment = Alignment.Center,
-        onDismissRequest = { onDismiss() }
+        onDismissRequest = { onDismiss() },
+        offset = IntOffset(0, -280)
     ) {
         Box(
             modifier = Modifier
-                .offset(x = (offsetX).dp, y = (offsetY).dp)
-                .size(300.dp, 200.dp)
-                .background(Color.Cyan)
-                .border(1.dp, color = Color.Black),
-            contentAlignment = Alignment.TopCenter
+                .offset(offsetX.dp, (0).dp) // Apply offset
+                .size(300.dp, 120.dp) // Box size
+                .border(2.dp, color = Color.Black) // Border around the Box
+                .background(Color.Transparent) // Transparent background
+                .padding(top = 1.dp)
+            ,//contentAlignment = Alignment.TopCenter
         ) {
-            Text(text="Activation\n ${armsMuscles[muscleOpt]}",
+            // Text inside Box
+            Text(
+                text = "Activation\n ${armsMuscles[muscleOpt]}", // Adjust the text content
+                textAlign = TextAlign.Center,
+                fontSize = 13.sp,
+                lineHeight = 20.sp,
+                style = TextStyle(
                     textAlign = TextAlign.Center,
-                    fontSize = 13.sp,
-                    lineHeight = 20.sp,
-                    style = TextStyle(textAlign = TextAlign.Center,
-                        fontFamily = FontFamily.SansSerif,
-                    ),
-                modifier = Modifier.align(Alignment.TopCenter)
+                    fontFamily = FontFamily.SansSerif,
+                ),
+                modifier = Modifier
+                    .offset(y=0.dp)
+                    .padding(8.dp) // Padding to avoid clipping
+                    .align(Alignment.TopCenter) // Ensure text is aligned properly inside the Box
             )
             Button(
                 onClick = { onDismiss() },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(16.dp),
+                    .padding(1.dp),
+                    //.offset(offsetX.dp,offsetY.dp),
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
                 //Text("Close")
@@ -379,7 +389,9 @@ fun ShowImageFromResources(nameFile: String="") {
     Image(
         painter = painterResource(id = imageResId),
         contentDescription = "Image from resources",
-        modifier = Modifier.size(width = 300.dp, height = 200.dp),
+        modifier = Modifier.offset(x=0.dp,y=(-300).dp)
+            .size(width = 300.dp, height = 200.dp)
+            .background(Color.Cyan),
         alignment = Alignment.TopCenter
     )
 }
@@ -397,7 +409,7 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red),
+            .background(Color.Transparent), // Red
         contentAlignment = Alignment.TopStart
     ) {
         Button(
@@ -417,18 +429,18 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
     {
         Column(//horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .offset(x = 0.dp, y = 150.dp)
-                .background(Color.Blue)
+                .offset(x = 0.dp, y = 120.dp)
+                .background(Color.Transparent) //Blue
                 .height(700.dp)
         )
         {
             for (i in 0..<workout.size) {
                 val entry = workout.entries.toList()[i]
-                var c0 = Color.Yellow
-                var c1 = Color.Cyan
+                var c0 = Color.Transparent // Cyan
+                var c1 = Color.Transparent // Yellow
                 var c2 = Color.Transparent
-                if (i == 10) {
-                    c0 = Color.Transparent;c1 = Color.Transparent;c2 = Color.Transparent
+                if (i == 9) {
+                    c0 = Color.Cyan;c1 = Color.Yellow;c2 = Color.Red
                 }
                 Row(
                     modifier = Modifier
@@ -483,10 +495,10 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
                     contentAlignment = Alignment.BottomCenter // Align popup to the bottom
                 ) {
                     PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
-                        offsetX = 0, offsetY =0,
+                        offsetX = (0), offsetY =(-40),
                         entry.key)
 
-                    ShowImageFromResources("Biceps")
+                    //ShowImageFromResources("Biceps")
 
                 }
             }
