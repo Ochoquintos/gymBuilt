@@ -343,7 +343,7 @@ fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:Strin
                 .offset(offsetX.dp, (0).dp) // Apply offset
                 .size(300.dp, 120.dp) // Box size
                 .border(2.dp, color = Color.Black) // Border around the Box
-                .background(Color.Transparent) // Transparent background
+                .background(Color.Cyan) // Transparent background
                 .padding(top = 1.dp)
             ,//contentAlignment = Alignment.TopCenter
         ) {
@@ -358,7 +358,7 @@ fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:Strin
                     fontFamily = FontFamily.SansSerif,
                 ),
                 modifier = Modifier
-                    .offset(y=0.dp)
+                    .offset(y = 0.dp)
                     .padding(8.dp) // Padding to avoid clipping
                     .align(Alignment.TopCenter) // Ensure text is aligned properly inside the Box
             )
@@ -370,7 +370,6 @@ fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:Strin
                     //.offset(offsetX.dp,offsetY.dp),
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
-                //Text("Close")
             }
         }
     }
@@ -389,7 +388,8 @@ fun ShowImageFromResources(nameFile: String="") {
     Image(
         painter = painterResource(id = imageResId),
         contentDescription = "Image from resources",
-        modifier = Modifier.offset(x=0.dp,y=(-300).dp)
+        modifier = Modifier
+            .offset(x = 0.dp, y = (-300).dp)
             .size(width = 300.dp, height = 200.dp)
             .background(Color.Cyan),
         alignment = Alignment.TopCenter
@@ -409,7 +409,7 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent), // Red
+            .background(Color.Red), // Red
         contentAlignment = Alignment.TopStart
     ) {
         Button(
@@ -419,17 +419,17 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
             Text("Return")
         }
     }
-
-
     val workout = generateArmsWorkout(arms,biceps,triceps)
     Box(modifier = Modifier
-        .fillMaxSize() // Makes the Box span the entire screen
+        .fillMaxSize()
         .background(Color.Transparent)
     )
     {
-        Column(//horizontalAlignment = Alignment.CenterHorizontally,
+        var initialOffY=120
+        if(biceps==1)initialOffY=65
+        Column(
             modifier = Modifier
-                .offset(x = 0.dp, y = 120.dp)
+                .offset(x = 0.dp, y = (initialOffY).dp)
                 .background(Color.Transparent) //Blue
                 .height(700.dp)
         )
@@ -448,7 +448,6 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
 
                         .padding(1.dp)
                         .height(55.dp)
-                        //.offset(x = (0).dp, y = (-645*i).dp)
                         .background(c0),
                 ) {
 
@@ -463,18 +462,18 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
                         ),
                         modifier = Modifier
                             .offset(x = (80).dp, y = (0).dp)
-                            .background(c1)
+                            .background(Color.Yellow)
+                            .border(3.dp, Color.Black)
                             .padding(10.dp)
                             .width(220.dp),
 
                         )
                     Button(
                         onClick = { showPopupMap[entry.key] = true },
-                        modifier = Modifier//.alpha(0f)
-                            //.size(0.dp)
+                        modifier = Modifier
                             .offset(x = (-110).dp, y = (0).dp)
                             .width(150.dp)
-                            .background(c2),
+                            .background(Color.Transparent),
                         enabled = true,
                         colors = ButtonDefaults.buttonColors(Color.Transparent)
 
@@ -488,18 +487,25 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
             if (showPopupMap[entry.key] == true) {
                 Box(
                     modifier = Modifier
-                        .offset(y=240.dp)
+                        .offset(y = 240.dp)
                         .fillMaxSize()
                         .background(Color.Transparent) // Optional: dim the background
                         .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
                     contentAlignment = Alignment.BottomCenter // Align popup to the bottom
                 ) {
+                    var nameFile:String=""
                     PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
                         offsetX = (0), offsetY =(-40),
                         entry.key)
-
-                    ShowImageFromResources("")
-
+                    if(entry.key == "Extensors"||entry.key == "Flexors"||
+                        entry.key == "Brachioradialis") {
+                        nameFile="Arms"
+                    }else if(entry.key == "Long Head Tricep"||entry.key == "Lateral Head Tricep"||
+                        entry.key == "Medial Head Tricep"){
+                        nameFile="Triceps"
+                    }
+                    else{nameFile ="Biceps"}
+                    ShowImageFromResources(nameFile)
                 }
             }
         }
