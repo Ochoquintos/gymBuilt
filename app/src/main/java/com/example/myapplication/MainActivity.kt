@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "ArmsRoutine/1/0/0") {
         composable("home") { HomeScreen(navController) }
         composable("Upper Body"){ UpperBodyScreen(navController)}
         composable("Lower Body"){ LowerBodyScreen(navController)}
@@ -378,7 +378,9 @@ fun ShowImageFromResources(nameFile: String="") {
 
     Image(
         painter = painterResource(id = imageResId),
-        contentDescription = "Image from resources"
+        contentDescription = "Image from resources",
+        modifier = Modifier.size(width = 300.dp, height = 200.dp),
+        alignment = Alignment.TopCenter
     )
 }
 
@@ -483,6 +485,9 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
                     PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
                         offsetX = 0, offsetY =0,
                         entry.key)
+
+                    ShowImageFromResources("Biceps")
+
                 }
             }
         }
