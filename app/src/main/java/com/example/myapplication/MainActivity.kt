@@ -383,7 +383,7 @@ fun ShowImageFromResources(nameFile: String="") {
         "Triceps" -> R.drawable.triceps
         "Arms" -> R.drawable.forearms
         // Add more cases as needed
-        else -> R.drawable.biceps // Fallback image if not found
+        else -> R.drawable.forearms // Fallback image if not found
     }
 
     Image(
@@ -498,7 +498,7 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
                         offsetX = (0), offsetY =(-40),
                         entry.key)
 
-                    //ShowImageFromResources("Biceps")
+                    ShowImageFromResources("")
 
                 }
             }
