@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="this_is_a_popup_window">This is a popup window!</string>
+    <string name="dismiss">Dismiss</string>
+</resources>
