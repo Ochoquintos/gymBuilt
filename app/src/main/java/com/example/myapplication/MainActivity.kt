@@ -54,6 +54,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.example.myapplication.MuscleOptimization.armsMuscles
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.example.myapplication.R // Change to your package name
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -361,169 +366,27 @@ fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:Strin
     }
 }
 
+@Composable
+fun ShowImageFromResources(nameFile: String="") {
+    val imageResId = when (nameFile) {
+        "Biceps" -> R.drawable.biceps
+        "Triceps" -> R.drawable.triceps
+        "Arms" -> R.drawable.forearms
+        // Add more cases as needed
+        else -> R.drawable.biceps // Fallback image if not found
+    }
 
-//@Composable
-//fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,triceps:Int=0) {
-//
-//    val showPopupMap = remember { mutableStateMapOf<String, Boolean>() }
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color.Red),
-//        contentAlignment = Alignment.TopStart
-//    ) {
-//        Button(
-//            onClick = { navController.navigate("Arms") },
-//            modifier = Modifier.padding(16.dp)
-//        ) {
-//            Text("Return")
-//        }
-//    }
-//
-//
-//    val workout = generateArmsWorkout(arms,biceps,triceps)
-//    Column(//horizontalAlignment = Alignment.CenterHorizontally,
-//        modifier = Modifier
-//            .offset(x = 0.dp, y = 150.dp)
-//            .background(Color.Blue)
-//    )
-//    {
-//        for(i in 0..<workout.size){
-//            val entry = workout.entries.toList()[i]
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(1.dp)
-//                    .height(800.dp),
-//            ){
-//                var c:Color
-//                if(i==0){c=Color.Cyan}
-//                if(i==1){c=Color.Green}
-//                if(i==2){c=Color.White}
-//                else{c=Color.Yellow}
-//                Box(
-//
-//                    modifier = Modifier
-//                        .offset(y = (-750 * i).dp)
-//                        .background(color = c)
-//                ){
-//                    Text(text="muscle:${entry.key}\n Exercise: ${entry.value}",
-//                        textAlign = TextAlign.Start,
-//                        fontSize = 13.sp,
-//                        lineHeight = 20.sp,
-//                        style = TextStyle(textAlign = TextAlign.Center,
-//                            fontFamily = FontFamily.SansSerif,
-//                        ),
-//                        modifier = Modifier
-//                            .offset(x = (80).dp, y = (0).dp)
-//                            .background(c)
-//                            .padding(10.dp)
-//                            .width(220.dp),
-//
-//                        )
-//                    Button(
-//                        onClick = { showPopupMap[entry.key] = true },
-//                        modifier = Modifier//.alpha(0f)
-//                            .offset(x = (-110).dp, y = (0).dp)
-//                            .width(150.dp)
-//                            .background(Color.LightGray)
-//
-//                    ) {
-//                    }
-//                }
-//
-//
-//                // Display the PopupDemo Composable if showPopup is true
-//                if (showPopupMap[entry.key] == true) {
-//                    PopupDemo(
-//                        onDismiss = { showPopupMap[entry.key] = false },
-//                        offsetX = 0, offsetY = 0
-//                    )
-//                }
-//            }
-//
-//        }
-//    }
-//}
+    Image(
+        painter = painterResource(id = imageResId),
+        contentDescription = "Image from resources"
+    )
+}
 
-
-
-////Code works, but buttons are not displayed correctly
-//
-//@Composable
-//fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,triceps:Int=0) {
-//
-//    val showPopupMap = remember { mutableStateMapOf<String, Boolean>() }
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color.Red),
-//        contentAlignment = Alignment.TopStart
-//    ) {
-//        Button(
-//            onClick = { navController.navigate("Arms") },
-//            modifier = Modifier.padding(16.dp)
-//        ) {
-//            Text("Return")
-//        }
-//    }
-//
-//
-//    val workout = generateArmsWorkout(arms,biceps,triceps)
-//    Column(//horizontalAlignment = Alignment.CenterHorizontally,
-//        modifier = Modifier
-//            .offset(x = 0.dp, y = 150.dp)
-//            .background(Color.Blue)
-//    )
-//    {
-//        for(i in 0..<workout.size){
-//            val entry = workout.entries.toList()[i]
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(1.dp)
-//                    .height(55.dp),
-//            ){
-//                Text(text="muscle:${entry.key}\n Exercise: ${entry.value}",
-//                    textAlign = TextAlign.Start,
-//                    fontSize = 13.sp,
-//                    lineHeight = 20.sp,
-//                    style = TextStyle(textAlign = TextAlign.Center,
-//                        fontFamily = FontFamily.SansSerif,
-//                    ),
-//                    modifier = Modifier
-//                        .offset(x = (80).dp, y = (0).dp)
-//                        .background(Color.Cyan)
-//                        .padding(10.dp)
-//                        .width(220.dp),
-//
-//                    )
-//                Button(
-//                    onClick = { showPopupMap[entry.key] = true },
-//                    modifier = Modifier//.alpha(0f)
-//                        .offset(x = (-110).dp, y = (0).dp)
-//                        .width(150.dp)
-//                        .background(Color.LightGray)
-//
-//                ) {
-//                }
-//
-//
-//                // Display the PopupDemo Composable if showPopup is true
-//                if (showPopupMap[entry.key] == true) {
-//                    PopupDemo(
-//                        onDismiss = { showPopupMap[entry.key] = false },
-//                        offsetX = 0, offsetY = 0
-//                    )
-//                }
-//            }
-//
-//        }
-//    }
-//}
-
-
-
+@Preview
+@Composable
+fun PreviewImage() {
+    ShowImageFromResources()
+}
 
 @Composable
 fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,triceps:Int=0) {
@@ -603,15 +466,6 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
 
                     ) {
                     }
-
-
-//                    // Display the PopupDemo Composable if showPopup is true
-//                    if (showPopupMap[entry.key] == true) {
-//                        PopupDemo(
-//                            onDismiss = { showPopupMap[entry.key] = false },
-//                            offsetX = (0), offsetY = 55 * (-i) + 200
-//                        )
-//                    }
                 }
 
             }
