@@ -57,8 +57,9 @@ import com.example.myapplication.MuscleOptimization.armsMuscles
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
+import com.example.myapplication.MuscleOptimization.shouldersMuscles
 import com.example.myapplication.R // Change to your package name
-
+import com.example.myapplication.Routines.generateShouldersWorkout
 
 
 class MainActivity : ComponentActivity() {
@@ -332,7 +333,8 @@ fun ArmsScreen(navController: NavController) {
 
 
 @Composable
-fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:String="") {
+fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:String="",
+              activation:MutableMap<String, String>) {
     Popup(
         alignment = Alignment.Center,
         onDismissRequest = { onDismiss() },
@@ -349,7 +351,7 @@ fun PopupDemo(onDismiss: () -> Unit,offsetX:Int=0,offsetY:Int=0, muscleOpt:Strin
         ) {
             // Text inside Box
             Text(
-                text = "Activation\n ${armsMuscles[muscleOpt]}", // Adjust the text content
+                text = "Activation\n ${activation[muscleOpt]}", // Adjust the text content
                 textAlign = TextAlign.Center,
                 fontSize = 13.sp,
                 lineHeight = 20.sp,
@@ -381,6 +383,7 @@ fun ShowImageFromResources(nameFile: String="") {
         "Biceps" -> R.drawable.biceps
         "Triceps" -> R.drawable.triceps
         "Arms" -> R.drawable.forearms
+        "Shoulders"-> R.drawable.deltoids
         // Add more cases as needed
         else -> R.drawable.forearms // Fallback image if not found
     }
@@ -496,7 +499,7 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
                     var nameFile:String=""
                     PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
                         offsetX = (0), offsetY =(-40),
-                        entry.key)
+                        entry.key, armsMuscles)
                     if(entry.key == "Extensors"||entry.key == "Flexors"||
                         entry.key == "Brachioradialis") {
                         nameFile="Arms"
@@ -516,27 +519,105 @@ fun ArmsRoutineScreen(navController: NavController, arms:Int=1,biceps:Int=0,tric
 
 @Composable
 fun ShouldersScreen(navController: NavController) {
+
+    val showPopupMap = remember { mutableStateMapOf<String, Boolean>() }
     Box(
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("This is the Details Screen")
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
+            .background(Color.Red), // Red
+        contentAlignment = Alignment.TopStart
     ) {
         Button(
-            onClick = { navController.navigate("home") },
-            modifier = Modifier.padding(16.dp)
+            onClick = { navController.navigate("Upper Body") },
+            modifier = Modifier.padding(16.dp),
         ) {
-            Text("Go to Home")
+            Text("Return")
         }
     }
-}
+    val workout = generateShouldersWorkout()
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Transparent)
+    )
+    {
+        var initialOffY=175
+        Column(
+            modifier = Modifier
+                .offset(x = 0.dp, y = (initialOffY).dp)
+                .background(Color.Transparent) //Blue
+                .height(700.dp)
+        )
+        {
+            for (i in 0..<workout.size) {
+                val entry = workout.entries.toList()[i]
+                var c0 = Color.Transparent // Cyan
+                var c1 = Color.Transparent // Yellow
+                var c2 = Color.Transparent
+                if (i == 9) {
+                    c0 = Color.Cyan;c1 = Color.Yellow;c2 = Color.Red
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
 
+                        .padding(1.dp)
+                        .height(55.dp)
+                        .background(c0),
+                ) {
+
+                    Text(
+                        text = "muscle:${entry.key}\n Exercise: ${entry.value}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        lineHeight = 20.sp,
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily.SansSerif,
+                        ),
+                        modifier = Modifier
+                            .offset(x = (80).dp, y = (0).dp)
+                            .background(Color.Yellow)
+                            .border(3.dp, Color.Black)
+                            .padding(10.dp)
+                            .width(220.dp),
+
+                        )
+                    Button(
+                        onClick = { showPopupMap[entry.key] = true },
+                        modifier = Modifier
+                            .offset(x = (-110).dp, y = (0).dp)
+                            .width(150.dp)
+                            .background(Color.Transparent),
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(Color.Transparent)
+
+                    ) {
+                    }
+                }
+
+            }
+        }; for(i in 0..<workout.size) {
+        val entry = workout.entries.toList()[i]
+        if (showPopupMap[entry.key] == true) {
+            Box(
+                modifier = Modifier
+                    .offset(y = 240.dp)
+                    .fillMaxSize()
+                    .background(Color.Transparent) // Optional: dim the background
+                    .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
+                contentAlignment = Alignment.BottomCenter // Align popup to the bottom
+            ) {
+                val nameFile:String="Shoulders"
+                PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
+                    offsetX = (0), offsetY =(-40),
+                    entry.key, shouldersMuscles)
+                ShowImageFromResources(nameFile)
+            }
+        }
+    }
+
+    }
+}
 
 @Composable
 fun ChestScreen(navController: NavController) {
