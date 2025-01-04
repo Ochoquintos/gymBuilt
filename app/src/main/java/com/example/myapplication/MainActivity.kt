@@ -57,12 +57,14 @@ import com.example.myapplication.MuscleOptimization.armsMuscles
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
+import com.example.myapplication.MuscleOptimization.abdominalMuscles
 import com.example.myapplication.MuscleOptimization.backLegsMuscles
 import com.example.myapplication.MuscleOptimization.backMuscles
 import com.example.myapplication.MuscleOptimization.chestMuscles
 import com.example.myapplication.MuscleOptimization.frontLegsMuscles
 import com.example.myapplication.MuscleOptimization.shouldersMuscles
 import com.example.myapplication.R // Change to your package name
+import com.example.myapplication.Routines.generateAbdominalsWorkout
 import com.example.myapplication.Routines.generateBackLegsWorkout
 import com.example.myapplication.Routines.generateBackWorkout
 import com.example.myapplication.Routines.generateChestWorkout
@@ -405,6 +407,7 @@ fun ShowImageFromResources(nameFile: String="") {
         "Pectoralis"-> R.drawable.pectoralis
         "Front Legs"-> R.drawable.legs
         "Back Legs"->R.drawable.legs
+        "Abdominals"->R.drawable.abdominals
         // Add more cases as needed
         else -> R.drawable.forearms // Fallback image if not found
     }
@@ -950,7 +953,7 @@ fun BackLegsScreen(navController: NavController) {
         .background(Color.Transparent)
     )
     {
-        val initialOffY=175
+        val initialOffY=65
         Column(
             modifier = Modifier
                 .offset(x = 0.dp, y = (initialOffY).dp)
@@ -1041,13 +1044,13 @@ fun AbdominalsScreen(navController: NavController) {
             Text("Return")
         }
     }
-    val workout = generateBackWorkout()
+    val workout = generateAbdominalsWorkout()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.Transparent)
     )
     {
-        val initialOffY=120
+        val initialOffY=175
         Column(
             modifier = Modifier
                 .offset(x = 0.dp, y = (initialOffY).dp)
@@ -1108,10 +1111,10 @@ fun AbdominalsScreen(navController: NavController) {
                     .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
                 contentAlignment = Alignment.BottomCenter // Align popup to the bottom
             ) {
-                val nameFile:String="Back"
+                val nameFile:String="Abdominals"
                 PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
                     offsetX = (0), offsetY =(-40),
-                    entry.key, backMuscles)
+                    entry.key, abdominalMuscles)
                 ShowImageFromResources(nameFile)
             }
         }
