@@ -57,11 +57,13 @@ import com.example.myapplication.MuscleOptimization.armsMuscles
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
+import com.example.myapplication.MuscleOptimization.backLegsMuscles
 import com.example.myapplication.MuscleOptimization.backMuscles
 import com.example.myapplication.MuscleOptimization.chestMuscles
 import com.example.myapplication.MuscleOptimization.frontLegsMuscles
 import com.example.myapplication.MuscleOptimization.shouldersMuscles
 import com.example.myapplication.R // Change to your package name
+import com.example.myapplication.Routines.generateBackLegsWorkout
 import com.example.myapplication.Routines.generateBackWorkout
 import com.example.myapplication.Routines.generateChestWorkout
 import com.example.myapplication.Routines.generateFrontLegsWorkout
@@ -401,7 +403,8 @@ fun ShowImageFromResources(nameFile: String="") {
         "Subclavius"-> R.drawable.subclavius
         "Serratus"-> R.drawable.serratus
         "Pectoralis"-> R.drawable.pectoralis
-        "Front Legs"-> R.drawable.front_legs
+        "Front Legs"-> R.drawable.legs
+        "Back Legs"->R.drawable.legs
         // Add more cases as needed
         else -> R.drawable.forearms // Fallback image if not found
     }
@@ -941,7 +944,7 @@ fun BackLegsScreen(navController: NavController) {
             Text("Return")
         }
     }
-    val workout = generateChestWorkout()
+    val workout = generateBackLegsWorkout()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.Transparent)
@@ -1008,13 +1011,10 @@ fun BackLegsScreen(navController: NavController) {
                     .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
                 contentAlignment = Alignment.BottomCenter // Align popup to the bottom
             ) {
-                var nameFile:String=""
-                if(entry.key == "Subclavius")nameFile = "Subclavius"
-                else if(entry.key=="Serratus Anterior")nameFile="Serratus"
-                else{nameFile="Pectoralis"}
+                val nameFile:String="Back Legs"
                 PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
                     offsetX = (0), offsetY =(-40),
-                    entry.key, chestMuscles)
+                    entry.key, backLegsMuscles)
                 ShowImageFromResources(nameFile)
             }
         }
