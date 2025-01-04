@@ -104,6 +104,9 @@ fun MainScreen(){
         composable("Shoulders"){ ShouldersScreen(navController)}
         composable("Chest"){ ChestScreen(navController)}
         composable("Back"){ BackScreen(navController)}
+        composable("Back Lower Body"){ BackLegsScreen(navController)}
+        composable("Front Lower Body"){ FrontLegsScreen(navController)}
+        composable("Abdominals"){ AbdominalsScreen(navController)}
     }
 }
 
@@ -230,48 +233,52 @@ fun LowerBodyScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("This is the Details Screen")
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopStart
     ) {
         Button(
             onClick = { navController.navigate("home") },
             modifier = Modifier.padding(16.dp)
         ) {
-            Text("Go to Home")
+            Text("Return")
+        }
+    }
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Text(text = "What you wanna hit today",textAlign = TextAlign.Center,
+            modifier = Modifier.offset(x=0.dp,y=50.dp))
+        Button(onClick={navController.navigate("Front Lower Body")},
+            modifier = Modifier
+                .padding(16.dp)
+                .offset(x = 0.dp, y = 90.dp)){
+            Text("Front Lower Body",
+                modifier = Modifier.background(Color.Yellow),
+                fontSize = 16.sp,
+                color = Color.Red)
+        }
+        Button(onClick={navController.navigate("Back Lower Body")},
+            modifier = Modifier
+                .padding(16.dp)
+                .offset(x = 0.dp, y = 90.dp)){
+            Text("Back Lower Body",
+                modifier = Modifier.background(Color.Yellow),
+                fontSize = 16.sp,
+                color = Color.Red)
+        }
+        Button(onClick={navController.navigate("Abdominals")},
+            modifier = Modifier
+                .padding(16.dp)
+                .offset(x = 0.dp, y = 90.dp)){
+            Text("Abdominals",
+                modifier = Modifier.background(Color.Yellow),
+                fontSize = 16.sp,
+                color = Color.Red)
         }
     }
 }
-
-
-@Composable
-fun DetailsScreen(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("This is the Details Screen")
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(
-            onClick = { navController.navigate("home") },
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text("Go to Home")
-        }
-    }
-}
-
 
 @Composable
 fun ArmsScreen(navController: NavController) {
@@ -733,6 +740,299 @@ fun BackScreen(navController: NavController) {
     ) {
         Button(
             onClick = { navController.navigate("Upper Body") },
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Text("Return")
+        }
+    }
+    val workout = generateBackWorkout()
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Transparent)
+    )
+    {
+        val initialOffY=120
+        Column(
+            modifier = Modifier
+                .offset(x = 0.dp, y = (initialOffY).dp)
+                .background(Color.Transparent) //Blue
+                .height(700.dp)
+        )
+        {
+            for (i in 0..<workout.size) {
+                val entry = workout.entries.toList()[i]
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                        .padding(1.dp)
+                        .height(55.dp)
+                        .background(Color.Transparent),
+                ) {
+
+                    Text(
+                        text = "muscle:${entry.key}\n Exercise: ${entry.value}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        lineHeight = 20.sp,
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily.SansSerif,
+                        ),
+                        modifier = Modifier
+                            .offset(x = (80).dp, y = (0).dp)
+                            .background(Color.Yellow)
+                            .border(3.dp, Color.Black)
+                            .padding(10.dp)
+                            .width(220.dp),
+
+                        )
+                    Button(
+                        onClick = { showPopupMap[entry.key] = true },
+                        modifier = Modifier
+                            .offset(x = (-110).dp, y = (0).dp)
+                            .width(150.dp)
+                            .background(Color.Transparent),
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(Color.Transparent)
+
+                    ) {
+                    }
+                }
+
+            }
+        }; for(i in 0..<workout.size) {
+        val entry = workout.entries.toList()[i]
+        if (showPopupMap[entry.key] == true) {
+            Box(
+                modifier = Modifier
+                    .offset(y = 240.dp)
+                    .fillMaxSize()
+                    .background(Color.Transparent) // Optional: dim the background
+                    .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
+                contentAlignment = Alignment.BottomCenter // Align popup to the bottom
+            ) {
+                val nameFile:String="Back"
+                PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
+                    offsetX = (0), offsetY =(-40),
+                    entry.key, backMuscles)
+                ShowImageFromResources(nameFile)
+            }
+        }
+    }
+
+    }
+}
+
+
+@Composable
+fun FrontLegsScreen(navController: NavController) {
+
+    val showPopupMap = remember { mutableStateMapOf<String, Boolean>() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Red), // Red
+        contentAlignment = Alignment.TopStart
+    ) {
+        Button(
+            onClick = { navController.navigate("Lower Body") },
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Text("Return")
+        }
+    }
+    val workout = generateShouldersWorkout()
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Transparent)
+    )
+    {
+        val initialOffY=175
+        Column(
+            modifier = Modifier
+                .offset(x = 0.dp, y = (initialOffY).dp)
+                .background(Color.Transparent) //Blue
+                .height(700.dp)
+        )
+        {
+            for (i in 0..<workout.size) {
+                val entry = workout.entries.toList()[i]
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                        .padding(1.dp)
+                        .height(55.dp)
+                        .background(Color.Transparent),
+                ) {
+
+                    Text(
+                        text = "muscle:${entry.key}\n Exercise: ${entry.value}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        lineHeight = 20.sp,
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily.SansSerif,
+                        ),
+                        modifier = Modifier
+                            .offset(x = (80).dp, y = (0).dp)
+                            .background(Color.Yellow)
+                            .border(3.dp, Color.Black)
+                            .padding(10.dp)
+                            .width(220.dp),
+
+                        )
+                    Button(
+                        onClick = { showPopupMap[entry.key] = true },
+                        modifier = Modifier
+                            .offset(x = (-110).dp, y = (0).dp)
+                            .width(150.dp)
+                            .background(Color.Transparent),
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(Color.Transparent)
+
+                    ) {
+                    }
+                }
+
+            }
+        }; for(i in 0..<workout.size) {
+        val entry = workout.entries.toList()[i]
+        if (showPopupMap[entry.key] == true) {
+            Box(
+                modifier = Modifier
+                    .offset(y = 240.dp)
+                    .fillMaxSize()
+                    .background(Color.Transparent) // Optional: dim the background
+                    .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
+                contentAlignment = Alignment.BottomCenter // Align popup to the bottom
+            ) {
+                val nameFile:String="Shoulders"
+                PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
+                    offsetX = (0), offsetY =(-40),
+                    entry.key, shouldersMuscles)
+                ShowImageFromResources(nameFile)
+            }
+        }
+    }
+
+    }
+}
+
+@Composable
+fun BackLegsScreen(navController: NavController) {
+
+    val showPopupMap = remember { mutableStateMapOf<String, Boolean>() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Red), // Red
+        contentAlignment = Alignment.TopStart
+    ) {
+        Button(
+            onClick = { navController.navigate("Lower Body") },
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Text("Return")
+        }
+    }
+    val workout = generateChestWorkout()
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Transparent)
+    )
+    {
+        val initialOffY=175
+        Column(
+            modifier = Modifier
+                .offset(x = 0.dp, y = (initialOffY).dp)
+                .background(Color.Transparent) //Blue
+                .height(700.dp)
+        )
+        {
+            for (i in 0..<workout.size) {
+                val entry = workout.entries.toList()[i]
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                        .padding(1.dp)
+                        .height(55.dp)
+                        .background(Color.Transparent),
+                ) {
+
+                    Text(
+                        text = "muscle:${entry.key}\n Exercise: ${entry.value}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        lineHeight = 20.sp,
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily.SansSerif,
+                        ),
+                        modifier = Modifier
+                            .offset(x = (80).dp, y = (0).dp)
+                            .background(Color.Yellow)
+                            .border(3.dp, Color.Black)
+                            .padding(10.dp)
+                            .width(220.dp),
+
+                        )
+                    Button(
+                        onClick = { showPopupMap[entry.key] = true },
+                        modifier = Modifier
+                            .offset(x = (-110).dp, y = (0).dp)
+                            .width(150.dp)
+                            .background(Color.Transparent),
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(Color.Transparent)
+
+                    ) {
+                    }
+                }
+
+            }
+        }; for(i in 0..<workout.size) {
+        val entry = workout.entries.toList()[i]
+        if (showPopupMap[entry.key] == true) {
+            Box(
+                modifier = Modifier
+                    .offset(y = 240.dp)
+                    .fillMaxSize()
+                    .background(Color.Transparent) // Optional: dim the background
+                    .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
+                contentAlignment = Alignment.BottomCenter // Align popup to the bottom
+            ) {
+                var nameFile:String=""
+                if(entry.key == "Subclavius")nameFile = "Subclavius"
+                else if(entry.key=="Serratus Anterior")nameFile="Serratus"
+                else{nameFile="Pectoralis"}
+                PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
+                    offsetX = (0), offsetY =(-40),
+                    entry.key, chestMuscles)
+                ShowImageFromResources(nameFile)
+            }
+        }
+    }
+
+    }
+}
+
+
+@Composable
+fun AbdominalsScreen(navController: NavController) {
+
+    val showPopupMap = remember { mutableStateMapOf<String, Boolean>() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Red), // Red
+        contentAlignment = Alignment.TopStart
+    ) {
+        Button(
+            onClick = { navController.navigate("Lower Body") },
             modifier = Modifier.padding(16.dp),
         ) {
             Text("Return")
