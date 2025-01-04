@@ -59,10 +59,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import com.example.myapplication.MuscleOptimization.backMuscles
 import com.example.myapplication.MuscleOptimization.chestMuscles
+import com.example.myapplication.MuscleOptimization.frontLegsMuscles
 import com.example.myapplication.MuscleOptimization.shouldersMuscles
 import com.example.myapplication.R // Change to your package name
 import com.example.myapplication.Routines.generateBackWorkout
 import com.example.myapplication.Routines.generateChestWorkout
+import com.example.myapplication.Routines.generateFrontLegsWorkout
 import com.example.myapplication.Routines.generateShouldersWorkout
 
 
@@ -399,6 +401,7 @@ fun ShowImageFromResources(nameFile: String="") {
         "Subclavius"-> R.drawable.subclavius
         "Serratus"-> R.drawable.serratus
         "Pectoralis"-> R.drawable.pectoralis
+        "Front Legs"-> R.drawable.front_legs
         // Add more cases as needed
         else -> R.drawable.forearms // Fallback image if not found
     }
@@ -842,7 +845,7 @@ fun FrontLegsScreen(navController: NavController) {
             Text("Return")
         }
     }
-    val workout = generateShouldersWorkout()
+    val workout = generateFrontLegsWorkout()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.Transparent)
@@ -909,10 +912,10 @@ fun FrontLegsScreen(navController: NavController) {
                     .clickable { showPopupMap[entry.key] = false }, // Dismiss on outside touch
                 contentAlignment = Alignment.BottomCenter // Align popup to the bottom
             ) {
-                val nameFile:String="Shoulders"
+                val nameFile:String="Front Legs"
                 PopupDemo(onDismiss = { showPopupMap[entry.key] = false },
                     offsetX = (0), offsetY =(-40),
-                    entry.key, shouldersMuscles)
+                    entry.key, frontLegsMuscles)
                 ShowImageFromResources(nameFile)
             }
         }
